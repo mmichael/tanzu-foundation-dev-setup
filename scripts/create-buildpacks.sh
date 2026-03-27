@@ -3,6 +3,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILDPACK_DIR="${SCRIPT_DIR}/../buildpacks"
+FAILED_BUILDPACKS_FILE="${FAILED_BUILDPACKS_FILE:-/tmp/tanzu-setup-failed-buildpacks}"
+: > "${FAILED_BUILDPACKS_FILE}"
 
 position=30
 
@@ -22,7 +24,11 @@ for zip_file in "${zip_files[@]}"; do
     continue
   fi
 
-  cf create-buildpack "${name}" "${zip_file}" "${position}"
-  cf update-buildpack "${name}" --assign-stack "cflinuxfs4"
-  position=$((position + 1))
+  if cf create-buildpack "${name}" "${zip_file}" "${position}" && \
+     cf update-buildpack "${name}" --assign-stack "cflinuxfs"; then
+    position=$((position + 1))
+  else
+    echo "WARNING: Failed to create buildpack '${name}'. Apps using it will be skipped."
+    echo "${name}" >> "${FAILED_BUILDPACKS_FILE}"
+  fi
 done

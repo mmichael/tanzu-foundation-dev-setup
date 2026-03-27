@@ -18,6 +18,9 @@ if [[ -z "${APP_PREFIX:-}" ]]; then
 fi
 export APP_PREFIX
 
+export FAILED_BUILDPACKS_FILE="${TMPDIR:-/tmp}/tanzu-setup-failed-buildpacks"
+: > "${FAILED_BUILDPACKS_FILE}"
+
 echo "==> Cloning repositories..."
 bash "${SCRIPT_DIR}/clone-repos.sh"
 

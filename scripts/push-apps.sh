@@ -11,9 +11,32 @@ fi
 
 cd "${CATS_DIR}"
 
+FAILED_BUILDPACKS_FILE="${FAILED_BUILDPACKS_FILE:-/tmp/tanzu-setup-failed-buildpacks}"
+
+buildpack_failed() {
+  local bp="$1"
+  [[ -f "${FAILED_BUILDPACKS_FILE}" ]] && grep -qxF "${bp}" "${FAILED_BUILDPACKS_FILE}"
+}
+
 push_app_if_not_exists() {
   local app_name="$1"
   shift
+
+  local arg bp_name=""
+  for arg in "$@"; do
+    if [[ "${prev_arg:-}" == "-b" ]]; then
+      bp_name="${arg}"
+      break
+    fi
+    prev_arg="${arg}"
+  done
+  unset prev_arg
+
+  if [[ -n "${bp_name}" ]] && buildpack_failed "${bp_name}"; then
+    echo "Skipping '${app_name}': buildpack '${bp_name}' failed to install."
+    return
+  fi
+
   local existing
   existing=$(cf curl "/v3/apps?names=${app_name}" | jq '.pagination.total_results // 0')
   if [[ "${existing}" -gt 0 ]]; then
