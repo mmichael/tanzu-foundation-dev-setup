@@ -15,7 +15,7 @@ push_app_if_not_exists() {
   local app_name="$1"
   shift
   local existing
-  existing=$(cf curl "/v3/apps?names=${app_name}" | jq '.pagination.total_results')
+  existing=$(cf curl "/v3/apps?names=${app_name}" | jq '.pagination.total_results // 0')
   if [[ "${existing}" -gt 0 ]]; then
     echo "App '${app_name}' already exists, skipping."
     return

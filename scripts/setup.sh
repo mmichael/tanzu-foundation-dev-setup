@@ -3,6 +3,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+if ! cf target > /dev/null 2>&1; then
+  echo "ERROR: Not logged in to CF. Run 'cf login' first."
+  exit 1
+fi
+
 if [[ -z "${ORG_PREFIX:-}" ]]; then
   read -rp "Enter org prefix: " ORG_PREFIX
 fi

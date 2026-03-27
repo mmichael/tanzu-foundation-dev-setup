@@ -4,6 +4,7 @@ Scripts for provisioning a Tanzu Application Service (TAS) foundation with build
 
 ## Prerequisites
 
+- Bash 3.2.57 or later (the default shell on macOS)
 - [`cf` CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) installed and authenticated against a TAS foundation
 - [`jq`](https://jqlang.github.io/jq/) installed
 - `git` installed
