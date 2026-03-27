@@ -21,27 +21,28 @@ Scripts for provisioning a Tanzu Application Service (TAS) foundation with build
 
 ## Environment Variables
 
-Two variables control naming of all created resources. They can be set before running any script to avoid being prompted:
+These variables control the resources created. They can be set before running any script to avoid being prompted:
 
 | Variable | Description | Example |
 |---|---|---|
-| `ORG_PREFIX` | Prefix for the org name | `acme` → `acme-org` |
-| `APP_PREFIX` | Prefix for app names | `test` → `test-go-app`, `test-ruby-app`, … |
+| `CF_ORG` | Org name to create and target | `acme-org` |
+| `CF_SPACE` | Space name to create and target | `dev` |
+| `APP_PREFIX` | Optional prefix for app names | `test` → `test-go-app`; empty → `go-app` |
 
-If either variable is not set, `setup.sh` will prompt for it interactively.
+If any variable is not set, `setup.sh` will prompt for it interactively.
 
 ## Scripts
 
 ### `setup.sh` — Full setup (recommended entry point)
 
-Runs all setup steps in order. Prompts for `ORG_PREFIX` and `APP_PREFIX` if they are not already set in the environment.
+Runs all setup steps in order. Prompts for `CF_ORG`, `CF_SPACE`, and `APP_PREFIX` if they are not already set in the environment. `APP_PREFIX` is optional — press Enter to skip it and apps will be named without a prefix.
 
 ```bash
 # Interactive
 bash scripts/setup.sh
 
 # Non-interactive (pass variables via environment)
-ORG_PREFIX=acme APP_PREFIX=test bash scripts/setup.sh
+CF_ORG=acme-org CF_SPACE=dev APP_PREFIX=test bash scripts/setup.sh
 ```
 
 Steps performed:
@@ -79,15 +80,12 @@ bash scripts/create-buildpacks.sh
 
 ### `create-orgs-and-spaces.sh` — Create org and space
 
-Creates one org with one space and targets it as the active target.
+Creates the org and space specified by `CF_ORG` and `CF_SPACE`, then targets them as the active target. Each resource is checked first and skipped if it already exists.
 
-Resources created:
-- `<ORG_PREFIX>-org` with `space-1`
-
-Requires `ORG_PREFIX` to be set in the environment (handled automatically by `setup.sh`).
+Requires `CF_ORG` and `CF_SPACE` to be set in the environment (handled automatically by `setup.sh`).
 
 ```bash
-ORG_PREFIX=acme bash scripts/create-orgs-and-spaces.sh
+CF_ORG=acme-org CF_SPACE=dev bash scripts/create-orgs-and-spaces.sh
 ```
 
 ---
@@ -124,8 +122,8 @@ APP_PREFIX=test bash scripts/push-apps.sh
 
 Deletes the org (and all spaces and apps within it) and removes all buildpacks that were uploaded from the `buildpacks/` directory.
 
-Requires `ORG_PREFIX` to be set in the environment.
+Requires `CF_ORG` to be set in the environment.
 
 ```bash
-ORG_PREFIX=acme bash scripts/cleanup.sh
+CF_ORG=acme-org bash scripts/cleanup.sh
 ```

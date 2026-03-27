@@ -8,13 +8,18 @@ if ! cf target > /dev/null 2>&1; then
   exit 1
 fi
 
-if [[ -z "${ORG_PREFIX:-}" ]]; then
-  read -rp "Enter org prefix: " ORG_PREFIX
+if [[ -z "${CF_ORG:-}" ]]; then
+  read -rp "Enter org name: " CF_ORG
 fi
-export ORG_PREFIX
+export CF_ORG
+
+if [[ -z "${CF_SPACE:-}" ]]; then
+  read -rp "Enter space name: " CF_SPACE
+fi
+export CF_SPACE
 
 if [[ -z "${APP_PREFIX:-}" ]]; then
-  read -rp "Enter app prefix: " APP_PREFIX
+  read -rp "Enter app prefix (optional, press Enter to skip): " APP_PREFIX
 fi
 export APP_PREFIX
 

@@ -17,6 +17,7 @@ for zip_file in "${zip_files[@]}"; do
   name="$(basename "${zip_file}" .zip)"
   name="${name//-cached-cflinuxfs4/}"
   name="${name//./_}"
+  name="${name//-/_}"
 
   existing=$(cf curl "/v3/buildpacks?names=${name}" | jq '.pagination.total_results // 0')
   if [[ "${existing}" -gt 0 ]]; then

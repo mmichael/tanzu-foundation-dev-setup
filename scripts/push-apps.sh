@@ -47,29 +47,31 @@ push_app_if_not_exists() {
   cf push "${app_name}" "$@"
 }
 
+P="${APP_PREFIX:+${APP_PREFIX}-}"
+
 echo "Pushing go apps..."
-push_app_if_not_exists "${APP_PREFIX}-go-app"          -f assets/golang/manifest.yml -p assets/golang -m 0.25G
-push_app_if_not_exists "${APP_PREFIX}-go-app-v1_10_64" -f assets/golang/manifest.yml -p assets/golang -m 0.25G -b go_buildpack-v1_10_64
+push_app_if_not_exists "${P}go-app"          -f assets/golang/manifest.yml -p assets/golang -m 0.25G
+push_app_if_not_exists "${P}go-app-v1_10_64" -f assets/golang/manifest.yml -p assets/golang -m 0.25G -b go_buildpack-v1_10_64
 
 echo "Pushing java spring apps..."
-push_app_if_not_exists "${APP_PREFIX}-java-spring-app"          -f assets/java-spring/manifest.yml
-push_app_if_not_exists "${APP_PREFIX}-java-spring-app-v4_81_0"  -f assets/java-spring/manifest.yml -b java-buildpack-offline-v4_81_0
+push_app_if_not_exists "${P}java-spring-app"          -f assets/java-spring/manifest.yml
+push_app_if_not_exists "${P}java-spring-app-v4_81_0"  -f assets/java-spring/manifest.yml -b java-buildpack-offline-v4_81_0
 
 echo "Pushing ruby apps..."
-push_app_if_not_exists "${APP_PREFIX}-ruby-app" -p assets/ruby_simple -m 0.25G
+push_app_if_not_exists "${P}ruby-app" -p assets/ruby_simple -m 0.25G
 
 echo "Pushing node apps..."
-push_app_if_not_exists "${APP_PREFIX}-node-app" -p assets/node -m 0.25G
-push_app_if_not_exists "${APP_PREFIX}-node-app-v1_8_65" -p assets/node -m 0.25G -b nodejs_buildpack-v1_8_65
+push_app_if_not_exists "${P}node-app" -p assets/node -m 0.25G
+push_app_if_not_exists "${P}node-app-v1_8_65" -p assets/node -m 0.25G -b nodejs_buildpack-v1_8_65
 
 echo "Pushing nginx apps..."
-push_app_if_not_exists "${APP_PREFIX}-nginx-app" -p assets/nginx -m 0.25G
+push_app_if_not_exists "${P}nginx-app" -p assets/nginx -m 0.25G
 
 echo "Pushing python apps..."
-push_app_if_not_exists "${APP_PREFIX}-python-app" -p assets/python -m 0.25G
+push_app_if_not_exists "${P}python-app" -p assets/python -m 0.25G
 
 echo "Pushing php apps..."
-push_app_if_not_exists "${APP_PREFIX}-php-app" -p assets/php -m 0.25G
+push_app_if_not_exists "${P}php-app" -p assets/php -m 0.25G
 
 echo "Pushing r apps..."
-push_app_if_not_exists "${APP_PREFIX}-r-app" -p assets/r -m 0.25G
+push_app_if_not_exists "${P}r-app" -p assets/r -m 0.25G
