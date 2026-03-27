@@ -26,7 +26,7 @@ for zip_file in "${zip_files[@]}"; do
   fi
 
   if cf create-buildpack "${name}" "${zip_file}" "${position}" && \
-     cf update-buildpack "${name}" --assign-stack "cflinuxfs"; then
+     cf update-buildpack "${name}" --assign-stack "cflinuxfs4"; then
     position=$((position + 1))
   else
     echo "WARNING: Failed to create buildpack '${name}'. Apps using it will be skipped."

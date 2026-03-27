@@ -44,25 +44,27 @@ push_app_if_not_exists() {
     return
   fi
   echo "Pushing ${app_name}..."
-  cf push "${app_name}" "$@"
+  if ! cf push "${app_name}" "$@"; then
+    echo "WARNING: Failed to push '${app_name}', continuing."
+  fi
 }
 
 P="${APP_PREFIX:+${APP_PREFIX}-}"
 
 echo "Pushing go apps..."
 push_app_if_not_exists "${P}go-app"          -f assets/golang/manifest.yml -p assets/golang -m 0.25G
-push_app_if_not_exists "${P}go-app-v1_10_64" -f assets/golang/manifest.yml -p assets/golang -m 0.25G -b go_buildpack-v1_10_64
+push_app_if_not_exists "${P}go-app-v1_10_64" -f assets/golang/manifest.yml -p assets/golang -m 0.25G -b go_buildpack_v1_10_64
 
 echo "Pushing java spring apps..."
 push_app_if_not_exists "${P}java-spring-app"          -f assets/java-spring/manifest.yml
-push_app_if_not_exists "${P}java-spring-app-v4_81_0"  -f assets/java-spring/manifest.yml -b java-buildpack-offline-v4_81_0
+push_app_if_not_exists "${P}java-spring-app-v4_81_0"  -f assets/java-spring/manifest.yml -b java_buildpack_offline_v4_81_0
 
 echo "Pushing ruby apps..."
 push_app_if_not_exists "${P}ruby-app" -p assets/ruby_simple -m 0.25G
 
 echo "Pushing node apps..."
 push_app_if_not_exists "${P}node-app" -p assets/node -m 0.25G
-push_app_if_not_exists "${P}node-app-v1_8_65" -p assets/node -m 0.25G -b nodejs_buildpack-v1_8_65
+push_app_if_not_exists "${P}node-app-v1_8_65" -p assets/node -m 0.25G -b nodejs_buildpack_v1_8_65
 
 echo "Pushing nginx apps..."
 push_app_if_not_exists "${P}nginx-app" -p assets/nginx -m 0.25G
