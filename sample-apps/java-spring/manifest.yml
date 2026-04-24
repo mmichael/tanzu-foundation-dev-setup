@@ -1,0 +1,9 @@
+---
+applications:
+- path: target/spring-boot-trivial-app-0.0.1.jar
+  name: simple-java-spring-with-actuators-enabled
+  env:
+    JBP_CONFIG_OPEN_JDK_JRE: '{ "jre": { version: 17.+ } }'
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: true}'
+    JBP_CONFIG_TOMCAT: '{ tomcat: { version: 8.0.+ } }'
+

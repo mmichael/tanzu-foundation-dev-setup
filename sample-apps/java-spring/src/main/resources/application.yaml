@@ -1,0 +1,56 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  tracing:
+    sampling:
+      probability: 1.0
+  info:
+    build-timestamp: @maven.build.timestamp@
+    git:
+      enabled: true
+      mode: full
+    env:
+      show-values: ALWAYS
+      enabled: true
+    java:
+      enabled: true
+  endpoint:
+    beans:
+      enabled: true
+    conditions:
+      enabled: true
+    configprops:
+      enabled: true
+      show-values: ALWAYS
+    info:
+      show-values: ALWAYS
+      git:
+        mode: full
+    env:
+      show-values: ALWAYS
+    health:
+      enabled: true
+      show-details: ALWAYS
+    loggers:
+      enabled: true
+    mappings:
+      enabled: true
+    probes:
+      enabled: true
+    httpexchanges:
+      enabled: true
+      show-details: ALWAYS
+  cloudfoundry:
+    skip-ssl-validation: true
+
+info:
+  spring:
+    boot:
+      version: '@app.spring.boot.version@'
+  app:
+    version: @project.version@
+
+application:
+  externalUrl: http://github.com
