@@ -53,7 +53,6 @@ P="${APP_PREFIX:+${APP_PREFIX}-}"
 
 echo "Pushing go apps..."
 push_app_if_not_exists "${P}go-app"          -f assets/golang/manifest.yml -p assets/golang -m 0.25G
-push_app_if_not_exists "${P}go-app-v1_10_64" -f assets/golang/manifest.yml -p assets/golang -m 0.25G -b go_buildpack_v1_10_64
 
 echo "Pushing java spring apps..."
 push_app_if_not_exists "${P}java-spring-app"          -f assets/java-spring/manifest.yml
@@ -74,6 +73,7 @@ push_app_if_not_exists "${P}python-app" -p assets/python -m 0.25G
 
 echo "Pushing php apps..."
 push_app_if_not_exists "${P}php-app" -p assets/php -m 0.25G
+push_app_if_not_exists "${P}php-app-v4_84" -p assets/node -m 0.25G -b php_buildpack_v4_6_84
 
 echo "Pushing r apps..."
 push_app_if_not_exists "${P}r-app" -p assets/r -m 0.25G

@@ -10,11 +10,11 @@ fi
 
 cf target -o "${CF_ORG}"
 
-space_exists=$(cf curl "/v3/spaces?names=${CF_SPACE}" | jq '.pagination.total_results // 0')
+ORG_GUID=$(cf org "${CF_ORG}" --guid)
+space_exists=$(cf curl "/v3/spaces?names=${CF_SPACE}&organization_guids=${ORG_GUID}" | jq '.pagination.total_results // 0')
 if [[ "${space_exists}" -gt 0 ]]; then
-  echo "Space '${CF_SPACE}' already exists, skipping."
+  echo "Space '${CF_SPACE}' already exists in org '${CF_ORG}', skipping."
 else
   cf create-space "${CF_SPACE}"
 fi
-
 cf target -o "${CF_ORG}" -s "${CF_SPACE}"
